@@ -60,12 +60,11 @@ export const DashboardOverview = () => {
                     <p className="text-3xl font-bold">0</p>
                 </div>
             </div>
-            </div>
-            
+
             <div className="mt-8 rounded-lg bg-white p-6 shadow">
                 <h3 className="mb-4 text-lg font-bold">Quick Actions</h3>
                 <PaystackButton />
             </div>
-        </div >
+        </div>
     )
 }
