@@ -1,4 +1,4 @@
-import { Save, Bell, Shield } from 'lucide-react'
+import { Save, Bell, Shield, CreditCard } from 'lucide-react'
 
 export const Settings = () => {
     return (
@@ -31,6 +31,43 @@ export const Settings = () => {
                         </div>
                         <label className="relative inline-flex cursor-pointer items-center">
                             <input type="checkbox" value="" className="peer sr-only" defaultChecked />
+                            <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+                <h3 className="mb-4 flex items-center gap-2 font-semibold text-gray-900">
+                    <CreditCard className="h-5 w-5 text-gray-400" />
+                    Payment Configuration
+                </h3>
+                <div className="space-y-4">
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <div>
+                            <label className="mb-2 block text-sm font-medium text-gray-700">Paystack Public Key</label>
+                            <input
+                                type="text"
+                                placeholder="pk_test_..."
+                                className="w-full rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                            />
+                        </div>
+                        <div>
+                            <label className="mb-2 block text-sm font-medium text-gray-700">Paystack Secret Key</label>
+                            <input
+                                type="password"
+                                placeholder="sk_test_..."
+                                className="w-full rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                            />
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between rounded-lg border border-gray-100 p-4">
+                        <div>
+                            <p className="font-medium text-gray-900">Live Mode</p>
+                            <p className="text-sm text-gray-500">Enable real payments (process real cards).</p>
+                        </div>
+                        <label className="relative inline-flex cursor-pointer items-center">
+                            <input type="checkbox" value="" className="peer sr-only" />
                             <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300"></div>
                         </label>
                     </div>

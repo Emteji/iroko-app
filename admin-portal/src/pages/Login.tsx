@@ -32,7 +32,7 @@ export const Login = () => {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+        <div className="flex min-h-screen w-full items-center justify-center bg-gray-50 p-4">
             {/* Decorative Background */}
             <div className="absolute inset-0 z-0 overflow-hidden">
                 <div className="absolute -left-10 -top-10 h-64 w-64 rounded-full bg-green-200 opacity-20 blur-3xl"></div>
@@ -57,23 +57,25 @@ export const Login = () => {
 
                     <form onSubmit={handleLogin} className="space-y-5">
                         <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">Email Address</label>
+                            <label className="mb-1 block text-sm font-medium text-gray-900">Email Address</label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-sm outline-none transition-all focus:border-green-500 focus:bg-white focus:ring-1 focus:ring-green-500"
+                                className="w-full rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-green-500 focus:bg-white focus:ring-1 focus:ring-green-500"
+                                placeholder="name@example.com"
                                 required
                             />
                         </div>
 
                         <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
+                            <label className="mb-1 block text-sm font-medium text-gray-900">Password</label>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-sm outline-none transition-all focus:border-green-500 focus:bg-white focus:ring-1 focus:ring-green-500"
+                                className="w-full rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none transition-all focus:border-green-500 focus:bg-white focus:ring-1 focus:ring-green-500"
+                                placeholder="••••••••"
                                 required
                             />
                         </div>
