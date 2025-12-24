@@ -1,46 +1,36 @@
 import React from 'react'
-import { useNavigate, Outlet, Link } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { PaystackButton } from '../components/PaystackButton'
+import { Sidebar } from '../components/Sidebar'
+import { StatsCard } from '../components/StatsCard'
+import { RecentUsersTable } from '../components/RecentUsersTable'
+import { Users, CreditCard, TrendingUp } from 'lucide-react'
 
+// Layout Component (Shell)
 export const DashboardLayout = () => {
-    const navigate = useNavigate()
-
-    const handleLogout = async () => {
-        await supabase.auth.signOut()
-        navigate('/')
-    }
-
     return (
-        <div className="flex h-screen bg-gray-100">
-            {/* Sidebar */}
-            <aside className="w-64 bg-green-800 text-white">
-                <div className="p-4">
-                    <h1 className="text-xl font-bold">Admin Panel</h1>
+        <div className="flex h-screen bg-gray-50 font-sans">
+            <Sidebar />
+            <main className="flex-1 overflow-y-auto">
+                <header className="flex h-20 items-center justify-between bg-white px-8 shadow-sm">
+                    <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
+                    <div className="flex items-center gap-4">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+                            {/* User Avatar Placeholder */}
+                            <span className="font-bold text-gray-600">A</span>
+                        </div>
+                    </div>
+                </header>
+                <div className="p-8">
+                    <Outlet />
                 </div>
-                <nav className="mt-8 space-y-2 px-4">
-                    <Link to="/dashboard" className="block rounded px-4 py-2 hover:bg-green-700">Overview</Link>
-                    <Link to="/dashboard/users" className="block rounded px-4 py-2 hover:bg-green-700">Users</Link>
-                    <Link to="/dashboard/payments" className="block rounded px-4 py-2 hover:bg-green-700">Payments</Link>
-                </nav>
-                <div className="absolute bottom-0 w-64 p-4">
-                    <button
-                        onClick={handleLogout}
-                        className="w-full rounded bg-red-600 px-4 py-2 hover:bg-red-700"
-                    >
-                        Logout
-                    </button>
-                </div>
-            </aside>
-
-            {/* Main Content */}
-            <main className="flex-1 overflow-auto p-8">
-                <Outlet />
             </main>
         </div>
     )
 }
 
+// Overview Page Component
 export const DashboardOverview = () => {
     const [userCount, setUserCount] = React.useState(0)
 
@@ -55,27 +45,49 @@ export const DashboardOverview = () => {
     }, [])
 
     return (
-        <div>
-            <h2 className="mb-6 text-3xl font-bold text-gray-800">Dashboard Overview</h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                {/* Stats Cards */}
-                <div className="rounded-lg bg-white p-6 shadow">
-                    <h3 className="text-gray-500">Total Users</h3>
-                    <p className="text-3xl font-bold">{userCount}</p>
-                </div>
-                <div className="rounded-lg bg-white p-6 shadow">
-                    <h3 className="text-gray-500">Revenue</h3>
-                    <p className="text-3xl font-bold">₦0.00</p>
-                </div>
-                <div className="rounded-lg bg-white p-6 shadow">
-                    <h3 className="text-gray-500">Active Subscriptions</h3>
-                    <p className="text-3xl font-bold">0</p>
-                </div>
+        <div className="space-y-8">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <StatsCard
+                    title="Total Users"
+                    value={userCount}
+                    icon={Users}
+                    trend="12%"
+                    trendUp={true}
+                    color="blue"
+                />
+                <StatsCard
+                    title="Total Revenue"
+                    value="₦0.00"
+                    icon={CreditCard}
+                    trend="0%"
+                    trendUp={true}
+                    color="green"
+                />
+                <StatsCard
+                    title="Active Subs"
+                    value="0"
+                    icon={TrendingUp}
+                    trend="5%"
+                    trendUp={true}
+                    color="purple"
+                />
             </div>
 
-            <div className="mt-8 rounded-lg bg-white p-6 shadow">
-                <h3 className="mb-4 text-lg font-bold">Quick Actions</h3>
-                <PaystackButton />
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                {/* Main Content Area (e.g., Table) */}
+                <div className="lg:col-span-2">
+                    <RecentUsersTable />
+                </div>
+
+                {/* Side Content Area (e.g., Quick Actions) */}
+                <div className="space-y-6">
+                    <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+                        <h3 className="mb-4 font-semibold text-gray-900">Quick Actions</h3>
+                        <p className="mb-6 text-sm text-gray-500">Initiate manual payments or overrides.</p>
+                        <PaystackButton />
+                    </div>
+                </div>
             </div>
         </div>
     )
