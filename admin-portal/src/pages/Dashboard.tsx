@@ -1,4 +1,3 @@
-import React from 'react'
 import { useNavigate, Outlet, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { PaystackButton } from '../components/PaystackButton'

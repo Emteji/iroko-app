@@ -1,4 +1,3 @@
-import React from 'react'
 import { usePaystackPayment } from 'react-paystack'
 
 const config = {
