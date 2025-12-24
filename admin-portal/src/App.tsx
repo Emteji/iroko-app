@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Login } from './pages/Login'
 import { DashboardLayout, DashboardOverview } from './pages/Dashboard'
+import { Users } from './pages/Users'
+import { Payments } from './pages/Payments'
+import { Settings } from './pages/Settings'
 
 function App() {
   return (
@@ -9,8 +12,9 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardOverview />} />
-          <Route path="users" element={<div className="text-xl">User Management (Coming Soon)</div>} />
-          <Route path="payments" element={<div className="text-xl">Payment History (Coming Soon)</div>} />
+          <Route path="users" element={<Users />} />
+          <Route path="payments" element={<Payments />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
