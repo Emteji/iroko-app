@@ -1,3 +1,4 @@
+import React from 'react'
 import { useNavigate, Outlet, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { PaystackButton } from '../components/PaystackButton'
@@ -41,6 +42,18 @@ export const DashboardLayout = () => {
 }
 
 export const DashboardOverview = () => {
+    const [userCount, setUserCount] = React.useState(0)
+
+    React.useEffect(() => {
+        const fetchStats = async () => {
+            const { count } = await supabase
+                .from('profiles')
+                .select('*', { count: 'exact', head: true })
+            if (count !== null) setUserCount(count)
+        }
+        fetchStats()
+    }, [])
+
     return (
         <div>
             <h2 className="mb-6 text-3xl font-bold text-gray-800">Dashboard Overview</h2>
@@ -48,7 +61,7 @@ export const DashboardOverview = () => {
                 {/* Stats Cards */}
                 <div className="rounded-lg bg-white p-6 shadow">
                     <h3 className="text-gray-500">Total Users</h3>
-                    <p className="text-3xl font-bold">0</p>
+                    <p className="text-3xl font-bold">{userCount}</p>
                 </div>
                 <div className="rounded-lg bg-white p-6 shadow">
                     <h3 className="text-gray-500">Revenue</h3>
