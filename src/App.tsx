@@ -12,9 +12,13 @@ import UserManagement from './pages/admin/Users';
 import SafetyAbuse from './pages/admin/Safety';
 import ContentManagement from './pages/admin/Content';
 
+import ChildDashboard from './pages/ChildDashboard';
+import ParentDashboard from './pages/Dashboard';
+
 // Auth Pages
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Home from './pages/Home';
 
 function App() {
   const checkAuth = useAuthStore((state) => state.checkAuth);
@@ -26,8 +30,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        
+        {/* Main Application Routes */}
+        <Route path="/dashboard" element={<ParentDashboard />} />
+        <Route path="/child" element={<ChildDashboard />} />
         
         {/* Admin Routes */}
         <Route path="/admin" element={
@@ -43,9 +52,6 @@ function App() {
           <Route path="users" element={<UserManagement />} />
           <Route path="safety" element={<SafetyAbuse />} />
         </Route>
-
-        {/* Redirect root to admin for now, or landing page later */}
-        <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   );

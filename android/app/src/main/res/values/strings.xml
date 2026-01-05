@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Iroko</string>
+    <string name="title_activity_main">Iroko</string>
+    <string name="package_name">com.iroko.app</string>
+    <string name="custom_url_scheme">com.iroko.app</string>
+</resources>
