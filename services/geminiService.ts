@@ -1,8 +1,7 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { LocationContext } from '../types';
 
-const genAI = new GoogleGenerativeAI(process.env.API_KEY || '');
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// NOTE: We do NOT import GoogleGenerativeAI here anymore to avoid client-side bundling issues
+// and to keep the API Key secure on the server.
 
 export type PersonaType = 'elder' | 'auntie' | 'uncle';
 
@@ -46,13 +45,21 @@ const getContextModifier = (context: LocationContext) => {
    }
 };
 
-// Helper to sanitize JSON string from AI (Removes markdown code blocks)
-const cleanJsonString = (str: string): string => {
-  if (!str) return "{}";
-  // Remove ```json and ``` wrapping if present
-  let cleaned = str.replace(/```json/g, "").replace(/```/g, "");
-  return cleaned.trim();
-};
+// Helper to call our serverless function instead of Gemini directly
+async function callAiApi(prompt: string, action: string) {
+  try {
+    const res = await fetch('/api/ai/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, prompt })
+    });
+    if (!res.ok) throw new Error('AI API Failed');
+    return await res.json();
+  } catch (e) {
+    console.error("AI API Error", e);
+    throw e;
+  }
+}
 
 export const generateLessonPlan = async (
   topic: string,
@@ -61,11 +68,6 @@ export const generateLessonPlan = async (
   persona: PersonaType = 'elder',
   locationContext: LocationContext = 'home'
 ): Promise<any> => {
-  if (!process.env.API_KEY) {
-    console.warn("No API Key provided. Returning mock data.");
-    return mockLessonResponse(topic, persona, locationContext);
-  }
-
   const personaInstruction = PERSONA_PROMPTS[persona];
   const environmentInstruction = getContextModifier(locationContext);
 
@@ -81,21 +83,23 @@ export const generateLessonPlan = async (
     The lesson must be culturally relevant to their specific environment (Home vs Diaspora).
     
     Return the response as a valid JSON object matching the schema. Do not add markdown formatting.
+    
+    JSON Schema:
+    {
+      "title": "string",
+      "duration": "string",
+      "objective": "string",
+      "storyOrProverb": "string",
+      "discussionPoints": ["string"],
+      "practicalActivity": { "name": "string", "instructions": ["string"] },
+      "streetSmartTip": "string"
+    }
   `;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
-
-    if (!text) throw new Error("No response from AI");
-    
-    const cleanedText = cleanJsonString(text);
-    return JSON.parse(cleanedText);
-
+    return await callAiApi(prompt, 'generate_lesson');
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    // Fallback to mock data on error ensures the app doesn't crash for the user
+    console.warn("Falling back to mock lesson due to API error");
     return mockLessonResponse(topic, persona, locationContext);
   }
 };
@@ -106,8 +110,6 @@ export const generateScenario = async (
   persona: PersonaType,
   locationContext: LocationContext = 'home'
 ): Promise<any> => {
-   if (!process.env.API_KEY) return mockScenarioResponse(category, persona, locationContext);
-
    const personaInstruction = PERSONA_PROMPTS[persona];
    const environmentInstruction = getContextModifier(locationContext);
 
@@ -125,20 +127,22 @@ export const generateScenario = async (
      3. The Evaluation (What you, the persona, think of each choice).
      
      Return JSON. Do not add markdown formatting.
+
+     JSON Schema:
+     {
+       "situation": "string",
+       "options": [
+         { "id": "A", "text": "string", "outcome": "string", "score": 0 },
+         { "id": "B", "text": "string", "outcome": "string", "score": 100 },
+         { "id": "C", "text": "string", "outcome": "string", "score": 50 }
+       ]
+     }
    `;
 
    try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
-
-    if (!text) throw new Error("No response from AI");
-    
-    const cleanedText = cleanJsonString(text);
-    return JSON.parse(cleanedText);
-
+    return await callAiApi(prompt, 'generate_scenario');
   } catch (error) {
-    console.error("Gemini Scenario Error:", error);
+    console.warn("Falling back to mock scenario due to API error");
     return mockScenarioResponse(category, persona, locationContext);
   }
 };
