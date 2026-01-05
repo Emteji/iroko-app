@@ -137,7 +137,7 @@ export default function ContentManagement() {
                 <Input 
                   type="number"
                   value={newMission.xp} 
-                  onChange={(e) => setNewMission({...newMission, xp: e.target.value})} 
+                  onChange={(e) => setNewMission({...newMission, xp: Number(e.target.value)})} 
                 />
               </div>
 

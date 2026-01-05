@@ -12,7 +12,7 @@ router.post('/guidance', getGuidance)
 router.post('/chat', async (req, res) => {
   try {
       const { message, childName, context } = req.body
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' })
       const prompt = `
         You are the Voice of the Village, a wise, calm, and encouraging AI guardian for a child named ${childName}.
         Context: ${context || 'General conversation'}

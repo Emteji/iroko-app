@@ -43,7 +43,7 @@ async function testConnections() {
     try {
       console.log("   Connecting to Gemini...");
       const genAI = new GoogleGenerativeAI(geminiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
       const result = await model.generateContent("Say 'Hello' if you can hear me.");
       const response = await result.response;
       const text = response.text();
