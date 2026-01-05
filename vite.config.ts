@@ -44,9 +44,4 @@ export default defineConfig({
       }
     }
   },
-  build: {
-    rollupOptions: {
-      external: ['recharts'],
-    },
-  },
 })
