@@ -7,6 +7,7 @@ export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
   
   const { action, ...data } = req.body
+  // Use a model known to exist in the free tier
   const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
   try {
