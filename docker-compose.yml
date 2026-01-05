@@ -1,0 +1,28 @@
+services:
+  # Backend API Service
+  backend:
+    build: ./backend-core
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - NODE_ENV=production
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    networks:
+      - iroko-network
+
+  # Admin Web Dashboard
+  admin-web:
+    build: .
+    ports:
+      - "3000:80"
+    networks:
+      - iroko-network
+    depends_on:
+      - backend
+
+networks:
+  iroko-network:
+    driver: bridge

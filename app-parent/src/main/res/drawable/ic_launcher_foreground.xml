@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Central Icon: Stylized Iroko Tree (Gold) -->
+    <!-- Trunk -->
+    <path
+        android:fillColor="#D9A53D"
+        android:pathData="M50,108 L58,108 L62,60 L46,60 Z" />
+        
+    <!-- Canopy: Geometric Shield/Tree Hybrid -->
+    <!-- Represents Protection and Governance -->
+    <path
+        android:fillColor="#D9A53D"
+        android:pathData="M54,20 C40,20 30,30 25,45 C20,60 35,65 45,60 L54,65 L63,60 C73,65 88,60 83,45 C78,30 68,20 54,20 Z" />
+        
+    <!-- Inner Detail: Growth Rings (Subtle) -->
+    <path
+        android:strokeColor="#C68E17"
+        android:strokeWidth="1.5"
+        android:pathData="M54,30 C60,30 65,35 65,40 C65,45 60,50 54,50 C48,50 43,45 43,40 C43,35 48,30 54,30" />
+        
+</vector>
