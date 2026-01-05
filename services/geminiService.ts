@@ -1,7 +1,8 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { LocationContext } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.API_KEY || '');
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export type PersonaType = 'elder' | 'auntie' | 'uncle';
 
@@ -83,41 +84,10 @@ export const generateLessonPlan = async (
   `;
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            title: { type: Type.STRING },
-            duration: { type: Type.STRING },
-            objective: { type: Type.STRING },
-            storyOrProverb: { type: Type.STRING, description: "A relevant short story or Nigerian proverb in the voice of the persona." },
-            discussionPoints: { 
-              type: Type.ARRAY, 
-              items: { type: Type.STRING } 
-            },
-            practicalActivity: { 
-              type: Type.OBJECT,
-              properties: {
-                name: { type: Type.STRING },
-                instructions: { 
-                  type: Type.ARRAY, 
-                  items: { type: Type.STRING } 
-                }
-              },
-              required: ["name", "instructions"]
-            },
-            streetSmartTip: { type: Type.STRING, description: "A final wisdom nugget in the specific voice/slang of the persona." }
-          },
-          required: ["title", "duration", "objective", "storyOrProverb", "discussionPoints", "practicalActivity", "streetSmartTip"]
-        }
-      }
-    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-    const text = response.text;
     if (!text) throw new Error("No response from AI");
     
     const cleanedText = cleanJsonString(text);
@@ -158,35 +128,10 @@ export const generateScenario = async (
    `;
 
    try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            situation: { type: Type.STRING },
-            options: { 
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                   id: { type: Type.STRING, enum: ["A", "B", "C"] },
-                   text: { type: Type.STRING },
-                   outcome: { type: Type.STRING, description: "The persona's reaction/feedback to this specific choice." },
-                   score: { type: Type.INTEGER, description: "Points awarded (0-100)" }
-                },
-                required: ["id", "text", "outcome", "score"]
-              }
-            }
-          },
-          required: ["situation", "options"]
-        }
-      }
-    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-    const text = response.text;
     if (!text) throw new Error("No response from AI");
     
     const cleanedText = cleanJsonString(text);
